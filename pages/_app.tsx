@@ -70,6 +70,9 @@ export default function App({ Component, pageProps }: AppProps) {
                         transform: "translateY(-100%)",
                         opacity: 0,
                     },
+                }} transition={{
+                    duration: 0.2,
+                    type: "just",
                 }}>
                     <Component {...pageProps} />
                 </motion.div>
