@@ -59,6 +59,12 @@ export function ContactForm() {
                         <Select
                             label="Tárgy"
                             placeholder="Válassz egyet"
+                            comboboxProps={{
+                                transitionProps: {
+                                    transition: 'scale-y',
+                                    duration: 200,
+                                }
+                            }}
                             classNames={{
                                 root: classes.select,
                                 dropdown: classes.selectDropdown,
