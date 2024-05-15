@@ -1,56 +1,61 @@
 import { useState } from 'react';
-import { Container, Anchor, Group, Burger, Box } from '@mantine/core';
+import { Container, Anchor, Group, Burger, Box, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import classes from './DoubleHeader.module.css';
+import classes from '@/styles/DoubleHeader.module.css';
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const userLinks = [
-    { link: '#', label: 'Privacy & Security' },
-    { link: '#', label: 'Account settings' },
-    { link: '#', label: 'Support options' },
+    { link: "https://github.com/shie1/", label: 'GitHub' },
+    { link: "https://www.linkedin.com/in/bence-sonkoly-219606280/", label: 'LinkedIn' },
 ];
 
 const mainLinks = [
-    { link: '#', label: 'Book a demo' },
-    { link: '#', label: 'Documentation' },
-    { link: '#', label: 'Community' },
-    { link: '#', label: 'Academy' },
-    { link: '#', label: 'Forums' },
+    { link: '/', label: 'Főoldal' },
+    { link: '/projects', label: 'Projektek' },
+    { link: '/about', label: 'Rólam' },
+    { link: '/contact', label: 'Kapcsolat' },
 ];
 
 export function DoubleHeader() {
     const [opened, { toggle }] = useDisclosure(false);
-    const [active, setActive] = useState(0);
+    const router = useRouter()
 
     const mainItems = mainLinks.map((item, index) => (
-        <Anchor<'a'>
+        <Link
             href={item.link}
             key={item.label}
             className={classes.mainLink}
-            data-active={index === active || undefined}
-            onClick={(event) => {
-                event.preventDefault();
-                setActive(index);
-            }}
+            data-active={router.pathname === item.link || undefined}
         >
             {item.label}
-        </Anchor>
+        </Link>
     ));
 
     const secondaryItems = userLinks.map((item) => (
-        <Anchor
+        <a
             href={item.link}
             key={item.label}
-            onClick={(event) => event.preventDefault()}
+            target={"_blank"}
+            rel={"external noreferrer noopener"}
             className={classes.secondaryLink}
         >
             {item.label}
-        </Anchor>
+        </a>
     ));
 
     return (
         <header className={classes.header}>
             <Container className={classes.inner}>
-                <MantineLogo size={34} />
+                <Title style={{
+                    color: "var(--mantine-color-paleRed-5)",
+                    lineHeight: 1.2,
+                    height: "1lh",
+                    fontSize: "2.4rem",
+                    fontFamily: "var(--font-title)",
+                    lineClamp: 1,
+                    overflow: "hidden",
+                }}>Sonkoly Bence</Title>
                 <Box className={classes.links} visibleFrom="sm">
                     <Group justify="flex-end">{secondaryItems}</Group>
                     <Group gap={0} justify="flex-end" className={classes.mainLinks}>
