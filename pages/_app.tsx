@@ -54,24 +54,26 @@ export default function App({ Component, pageProps }: AppProps) {
         <MantineProvider withCssVariables defaultColorScheme="dark" theme={theme}>
             <DoubleHeader />
             <AnimatePresence>
-                <motion.div key={router.route} initial="pageInitial" animate="pageAnimate" exit="pageExit" variants={{
+                <motion.div key={router.route} initial="pageInitial" animate="pageAnimate" exit="pageExit" style={{
+                    width: "100%",
+                }} variants={{
                     pageInitial: {
-                        width: "100%",
-                        transform: "translateY(100%)",
+                        position: "absolute",
+                        transform: "translateY(-100vh)",
                         opacity: 0,
                     },
                     pageAnimate: {
-                        width: "100%",
+                        position: "unset",
                         transform: "translateY(0%)",
                         opacity: 1,
                     },
                     pageExit: {
-                        width: "100%",
-                        transform: "translateY(-100%)",
+                        position: "absolute",
+                        transform: "translateY(100vh)",
                         opacity: 0,
                     },
                 }} transition={{
-                    duration: 0.2,
+                    duration: 0.4,
                     type: "just",
                 }}>
                     <Component {...pageProps} />
