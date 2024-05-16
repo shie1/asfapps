@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Container, Anchor, Group, Burger, Box, Title } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import { useEffect, useState } from 'react';
+import { Container, Anchor, Group, Burger, Box, Title, Transition, Stack, Divider } from '@mantine/core';
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import classes from '@/styles/DoubleHeader.module.css';
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -19,12 +19,16 @@ const mainLinks = [
 export function DoubleHeader() {
     const [opened, { toggle }] = useDisclosure(false);
     const router = useRouter()
+    const smallerThanSm = useMediaQuery("(max-width: 767px)");
 
     const mainItems = mainLinks.map((item, index) => (
         <Link
             href={item.link}
             key={item.label}
             className={classes.mainLink}
+            onClick={() => {
+                if (smallerThanSm) toggle()
+            }}
             data-active={router.pathname === item.link || undefined}
         >
             {item.label}
@@ -35,6 +39,7 @@ export function DoubleHeader() {
         <a
             href={item.link}
             key={item.label}
+            onClick={toggle}
             target={"_blank"}
             rel={"external noreferrer noopener"}
             className={classes.secondaryLink}
@@ -42,6 +47,22 @@ export function DoubleHeader() {
             {item.label}
         </a>
     ));
+
+    useEffect(() => {
+        if (typeof window === "undefined") return
+        let listener
+        if (opened && smallerThanSm) {
+            const x = window.scrollX
+            const y = window.scrollY
+            listener = (e: any) => {
+                window.scrollTo(x, y)
+            }
+        } else {
+            listener = () => { }
+        }
+        window.addEventListener("scroll", listener)
+        return () => window.removeEventListener("scroll", listener)
+    }, [opened, smallerThanSm])
 
     return (
         <header className={classes.header}>
@@ -69,6 +90,19 @@ export function DoubleHeader() {
                     hiddenFrom="sm"
                 />
             </Container>
+            <Transition transition="slide-up" mounted={opened}>
+                {(styles) => (
+                    <div style={styles} className={classes.mobileLinks}>
+                        <Stack gap="md">
+                            {mainItems}
+                        </Stack>
+                        <Divider my="lg" />
+                        <Stack p="md" gap="md">
+                            {secondaryItems}
+                        </Stack>
+                    </div>
+                )}
+            </Transition>
         </header>
     );
 }

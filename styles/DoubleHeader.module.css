@@ -2,7 +2,6 @@
     height: rem(84px);
     margin-bottom: rem(120px);
     background-color: var(--mantine-color-body);
-    border-bottom: rem(1px) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -38,8 +37,8 @@
     border-bottom: rem(2px) solid transparent;
     text-decoration: none;
     transition:
-            border-color 200ms ease,
-            color 200ms ease;
+        border-color 200ms ease,
+        color 200ms ease;
 
     @mixin hover {
         color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
@@ -62,5 +61,19 @@
     @mixin hover {
         color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
         text-decoration: none;
+    }
+}
+
+.mobileLinks {
+    max-width: 100vw;
+    height: calc(100vh - rem(84px));
+    background-color: var(--mantine-color-dark-7);
+    display: flex;
+    flex-direction: column;
+}
+
+@media screen and (min-width: 768px) {
+    .mobileLinks {
+        display: none;
     }
 }
