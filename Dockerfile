@@ -4,7 +4,7 @@ WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN apk add --no-cache curl
 COPY package.json ./
-COPY package-lock.lock ./
+COPY package-lock.json ./
 RUN npm run install --network-timeout 240000
 COPY . .
 RUN npm run build
