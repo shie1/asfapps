@@ -31,10 +31,10 @@ export function ProjectCard({
     ));
 
     return (
-        <Box p="md" className={classes.card} data-interactable={projectUrl ? "true" : "false"}>
-            <Box className={classes.imageBox} onClick={() => {
-                if (projectUrl) window.open(projectUrl, "_blank");
-            }}>
+        <Box onClick={() => {
+            if (projectUrl) window.open(projectUrl, "_blank");
+        }} p="md" className={classes.card} data-interactable={projectUrl ? "true" : "false"}>
+            <Box className={classes.imageBox}>
                 <Image className={classes.image} src={projectImage} alt={projectName} height={180} />
             </Box>
 
