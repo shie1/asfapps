@@ -66,7 +66,7 @@ export function HeroBullets() {
                         </Link>
                     </Group>
                 </div>
-                <Image loading='eager' draggable={false} src={web.src} className={classes.image} />
+                <Image alt="" loading='eager' draggable={false} src={web.src} className={classes.image} />
             </div>
         </div>
     );

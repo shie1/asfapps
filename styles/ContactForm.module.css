@@ -36,8 +36,13 @@
 .form *:is(input, textarea) {
     border-radius: 1rem;
     background-color: var(--mantine-color-white);
+    border: 3px solid transparent;
     color: black;
     font-family: var(--font-body);
+    transition: .2s;
+    &:focus{
+        border: 3px solid var(--mantine-color-paleRed-filled);
+    }
 }
 
 .form input::placeholder{

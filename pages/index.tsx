@@ -2,6 +2,8 @@ import Head from "next/head";
 import { HeroBullets } from "@/components/HeroBullets";
 import { FeaturesAsymmetrical } from "@/components/FeaturesAsymmetrical";
 import { Container, Divider, Title } from "@mantine/core";
+import { FaqWithImage } from "@/components/FaqWithImage";
+import { ProjectCards } from "./projects";
 
 export default function Home() {
   return (
@@ -19,6 +21,7 @@ export default function Home() {
             fontWeight: 100,
           }} order={2} my={30}>Szolgáltatásaim</Title>
           <FeaturesAsymmetrical />
+          <FaqWithImage />
         </Container>
       </main>
     </>
