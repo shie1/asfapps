@@ -8,11 +8,6 @@ import { ProjectCards } from "./projects";
 export default function Home() {
   return (
     <>
-      <Head>
-        <title>Webfejlesztés | Sonkoly Bence</title>
-        <meta name="description" content="Webfejleszás" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </Head>
       <main>
         <Container size="md" px="xl" pb="xl">
           <HeroBullets />
