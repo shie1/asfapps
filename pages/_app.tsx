@@ -6,6 +6,7 @@ import { DoubleHeader } from "@/components/DoubleHeader";
 import { Righteous, Montserrat, Comfortaa } from "next/font/google";
 import { AnimatePresence, motion } from 'framer-motion';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 
 const titleFont = Righteous({
     weight: "400",
@@ -51,6 +52,9 @@ const theme = createTheme({
 export default function App({ Component, pageProps }: AppProps) {
     const router = useRouter();
     return (<div className={`${titleFont.variable} ${bodyFont.variable}`}>
+        <Head>
+            <title>Sonkoly Bence</title>
+        </Head>
         <MantineProvider withCssVariables defaultColorScheme="dark" theme={theme}>
             <DoubleHeader />
             <AnimatePresence>

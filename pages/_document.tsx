@@ -6,6 +6,7 @@ export default function Document() {
         <Html lang="hu">
             <Head>
                 <ColorSchemeScript defaultColorScheme="light"/>
+                <link rel="icon" href="/icon.png"/>
             </Head>
             <body>
             <Main/>

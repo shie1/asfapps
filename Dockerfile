@@ -5,7 +5,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 RUN apk add --no-cache curl
 COPY package.json ./
 COPY package-lock.json ./
-RUN npm run install --network-timeout 240000
+RUN npm install --no-audit
 COPY . .
 RUN npm run build
 HEALTHCHECK CMD curl -I --fail http://localhost:3000 || exit 1
