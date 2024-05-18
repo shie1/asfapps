@@ -26,13 +26,15 @@ export const ProjectCards = () => (<CardsContainer>
 
 export default function Projects() {
     return (<>
-        <Container size="md" px="xl" pb="xl">
-            <Title style={{
-                fontFamily: "var(--font-title)",
-                fontWeight: 100,
-                marginBottom: 30,
-            }}>Projektjeim</Title>
-            <ProjectCards />
-        </Container >
+        <main>
+            <Container size="md" px="xl" pb="xl">
+                <Title style={{
+                    fontFamily: "var(--font-title)",
+                    fontWeight: 100,
+                    marginBottom: 30,
+                }}>Projektjeim</Title>
+                <ProjectCards />
+            </Container >
+        </main>
     </>)
 }

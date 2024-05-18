@@ -54,6 +54,7 @@ export default function App({ Component, pageProps }: AppProps) {
     return (<div className={`${titleFont.variable} ${bodyFont.variable}`}>
         <Head>
             <title>Sonkoly Bence</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
         </Head>
         <MantineProvider withCssVariables defaultColorScheme="dark" theme={theme}>
             <DoubleHeader />

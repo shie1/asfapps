@@ -41,7 +41,7 @@
     font-family: var(--font-body);
     transition: .2s;
     &:focus{
-        border: 3px solid var(--mantine-color-paleRed-filled);
+        border: 3px solid var(--mantine-color-paleRed-5);
     }
 }
 
