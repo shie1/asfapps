@@ -1,23 +1,92 @@
-import { Box, Button, Checkbox, Group, Stack, Text, TextInput, Textarea, Title } from "@mantine/core";
-import { useForm } from "@mantine/form";
+import { ActionIcon, Box, Button, Checkbox, Group, NumberInput, Stack, Text, TextInput, Textarea, Title } from "@mantine/core";
+import { useForm, UseFormReturnType } from "@mantine/form";
 import { features } from "process";
 import classes from "@/styles/QuoteRequestFrom.module.css";
 import { AnimatePresence, motion } from "framer-motion";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { PriceRender } from "./PriceRender";
 
-const Item = ({ title, description, price, quantity, disclaimer }: {
-  title: string;
-  description: string;
-  price: number | [number, number];
+const Item = ({ name, price, quantity }: {
+  name: string;
+  price: number;
   quantity?: number;
-  disclaimer?: string;
 }) => {
   return (<div className={classes.item}>
-    <Title order={4}>{title}</Title>
-    <p>{description}</p>
-
-    {disclaimer && <p>{disclaimer}</p>}
+    <Text className={classes.name}>{name}</Text>
+    <p className={classes.price}>{quantity ? `${quantity} x ` : ""}<PriceRender value={price} /></p>
   </div>);
+}
+
+function WebsiteFeatureCheckbox({ feature, form }: {
+  feature: WebsiteFeature,
+  form: UseFormReturnType<{
+    client: {
+      name: string;
+      email: string;
+      phone: string;
+    };
+    project: {
+      name: string;
+      description: string;
+      features: WebsiteFeature[];
+    };
+  }>;
+}) {
+
+  const [amount, setAmount] = useState(0);
+
+  const checked = useMemo(() => {
+    return form.values.project.features.find(f => f.label === feature.label) !== undefined;
+  }, [form.values.project.features, feature]);
+
+  useEffect(() => {
+    if (!feature.quantification) return;
+    if (amount < 0) setAmount(0);
+    if (amount === 0) {
+      form.setFieldValue("project.features", form.values.project.features.filter(f => f.label !== feature.label));
+    } else {
+      if (form.values.project.features.find(f => f.label === feature.label)) {
+        form.setFieldValue("project.features", form.values.project.features.map(f => f.label === feature.label ? { ...f, quantification: { ...f.quantification, amount: amount, name: f.quantification?.name || "" } } : f));
+      } else {
+        form.setFieldValue("project.features", [...form.values.project.features, { ...feature, quantification: { ...feature.quantification, amount: amount, name: feature.quantification?.name || "" } }]);
+      }
+    }
+  }, [amount, feature, form])
+
+  return (<Box className={classes.featureCard} key={feature.value}>
+    {feature.quantification ?
+      <div className={classes.quantityInput}>
+        <ActionIcon className={classes.quantityButton} size="sm" onClick={() => setAmount(amount + 1)}>+</ActionIcon>
+        <p
+          contentEditable
+          className={classes.amount}
+          suppressContentEditableWarning
+          onBlur={(e) => {
+            const value = parseInt(e.currentTarget.innerText);
+            if (!isNaN(value)) {
+              setAmount(value);
+            }
+          }}
+        >{amount}</p>
+        <ActionIcon disabled={amount < 1} className={classes.quantityButton} size="sm" onClick={() => setAmount(amount - 1)}>-</ActionIcon>
+      </div>
+      :
+      <Checkbox className={classes.checkBox} type="checkbox" id={feature.value} onClick={() => {
+        if (checked) {
+          form.setFieldValue("project.features", form.values.project.features.filter(f => f.label !== feature.label));
+        } else {
+          form.setFieldValue("project.features", [...form.values.project.features, feature]);
+        }
+      }} checked={checked} />}
+    <label className={classes.info} htmlFor={feature.value}>
+      <Title className={classes.label} order={4}>{feature.label}</Title>
+      <p className={classes.description}>{feature.description}</p>
+      <div className={classes.footer}>
+        {feature.disclaimer && <p className={classes.disclaimer}>{feature.disclaimer}</p>}
+        <p className={classes.price}>{feature.price.increase} Ft{feature.quantification ? `/${feature.quantification.name}` : ""}</p>
+      </div>
+    </label>
+  </Box>)
 }
 
 export type WebsiteFeature = {
@@ -123,17 +192,6 @@ export function QuoteRequestForm() {
     },
   });
 
-  const estimatedPrice = useMemo<number | undefined>(() => {
-    if (form.values.project.features.length === 0) return undefined;
-    return form.values.project.features.reduce((acc, feature) => {
-      if (typeof feature.price.increase === "number") {
-        return acc + feature.price.increase;
-      } else {
-        return acc + (feature.price.increase[0] + feature.price.increase[1]) / 2;
-      }
-    }, 0);
-  }, [form.values.project.features]);
-
   const showProjectDetails = useMemo(() => {
     return form.values.client.name && form.values.client.email && form.values.client.phone;
   }, [form.values.client.name, form.values.client.email, form.values.client.phone]);
@@ -146,25 +204,27 @@ export function QuoteRequestForm() {
     return showFeatures;
   }, [showFeatures]);
 
-  function WebsiteFeatureCheckbox({ feature }: { feature: WebsiteFeature }) {
-    return (<Box className={classes.featureCard} key={feature.value}>
-      <Checkbox className={classes.checkBox} type="checkbox" id={feature.value} onClick={() => {
-        if (form.values.project.features.includes(feature)) {
-          form.setFieldValue("project.features", form.values.project.features.filter(f => f !== feature));
-        } else {
-          form.setFieldValue("project.features", [...form.values.project.features, feature]);
-        }
-      }} checked={form.values.project.features.includes(feature)} />
-      <label className={classes.info} htmlFor={feature.value}>
-        <Title className={classes.label} order={4}>{feature.label}</Title>
-        <p className={classes.description}>{feature.description}</p>
-        <div className={classes.footer}>
-          {feature.disclaimer && <p className={classes.disclaimer}>{feature.disclaimer}</p>}
-          <p className={classes.price}>{feature.price.increase} Ft{feature.quantification ? `/${feature.quantification.name}` : ""}</p>
-        </div>
-      </label>
-    </Box>)
-  }
+  const summary = useMemo<{
+    name: string;
+    price: number;
+    quantity?: number;
+  }[]>(() => {
+    return [
+      {
+        name: "Alap weboldal csomag",
+        price: 60000
+      },
+      ...form.values.project.features.map(feature => ({
+        name: feature.label,
+        price: feature.price.increase,
+        quantity: feature.quantification?.amount
+      }))
+    ]
+  }, [form.values.project.features]);
+
+  const estimatedPrice = useMemo(() => {
+    return summary.reduce((prev, curr) => prev + curr.price * (curr.quantity || 1), 0);
+  }, [summary]);
 
   return (<>
     <Box>
@@ -208,22 +268,43 @@ export function QuoteRequestForm() {
               <Title className={classes.sectionLabel} order={3}>Funkciók</Title>
               <Stack>
                 {websiteFeaturesList.map(feature => (
-                  <WebsiteFeatureCheckbox key={feature.value} feature={feature} />
+                  <WebsiteFeatureCheckbox form={form} key={feature.value} feature={feature} />
                 ))}
               </Stack>
             </motion.div>}
-            {showSummary && <motion.div key="summary" className={classes.endSection}
-              transition={{
-                duration: 0.4,
-                type: "just",
-                ease: "easeInOut"
-              }}
-              initial={{ transform: "translateY(100%)" }}
-              animate={{ transform: "translateX(0)" }}
-              exit={{ transform: "translateY(100%)" }}>
-              <Text>Becsült ár: {estimatedPrice ? `${estimatedPrice} Ft` : "ismeretlen"}</Text>
-              <Button className={classes.submitButton} type="submit">Küldés</Button>
-            </motion.div>}
+            {showSummary && (<>
+              <motion.div key="summary" className={classes.section}
+                transition={{
+                  duration: 0.4,
+                  type: "just",
+                  ease: "easeInOut"
+                }}
+                initial={{ transform: "translateY(100%)" }}
+                animate={{ transform: "translateX(0)" }}
+                exit={{ transform: "translateY(100%)" }}>
+                <Stack>
+                  <div>
+                    <Title className={classes.sectionLabel} order={3}>Összegzés</Title>
+                    <Text className={classes.disclaimer}>Az árak tájékoztató jellegűek, a végleges árat a projekt részletes elemzése után tudjuk megadni.</Text>
+                  </div>
+                  {summary.map(item => (
+                    <Item key={item.name} name={item.name} price={item.price} quantity={item.quantity} />
+                  ))}
+                </Stack>
+              </motion.div>
+              <motion.div key="summary" className={classes.endSection}
+                transition={{
+                  duration: 0.4,
+                  type: "just",
+                  ease: "easeInOut"
+                }}
+                initial={{ transform: "translateY(100%)" }}
+                animate={{ transform: "translateX(0)" }}
+                exit={{ transform: "translateY(100%)" }}>
+                <Text>Becsült ár: {estimatedPrice ? <span className={classes.price}><PriceRender value={estimatedPrice} /></span> : "ismeretlen"}</Text>
+                <Button className={classes.submitButton} type="submit">Küldés</Button>
+              </motion.div>
+            </>)}
           </AnimatePresence>
         </Stack>
       </form>
