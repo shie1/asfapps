@@ -13,6 +13,7 @@ const userLinks = [
 const mainLinks = [
     { link: '/', label: 'Főoldal' },
     { link: '/projects', label: 'Projektek' },
+    { link: '/quote-request', label: 'Ajánlatkérés' },
     { link: '/contact', label: 'Kapcsolat' },
 ];
 

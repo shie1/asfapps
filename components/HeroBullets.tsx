@@ -22,7 +22,7 @@ export function HeroBullets() {
                             /* decrease width on page load*/
                             initial={{ width: '100%' }}
                             animate={{ width: 0 }}
-                            transition={{ duration: .5, delay: .5 }}
+                            transition={{ duration: .5, delay: .5, type: 'just' }}
                         />látható!</span>
                     </Title>
                     <Text c="dimmed" mt="md">

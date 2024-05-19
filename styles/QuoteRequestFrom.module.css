@@ -1,218 +1,225 @@
 .form * {
-    font-family: var(--font-body);
+  font-family: var(--font-body);
 }
 
 .input {
-    flex: 1;
-    min-width: 230px;
+  flex: 1;
+  min-width: 230px;
 
-    & *:is(input, textarea) {
-        border-radius: 2rem;
-        background-color: var(--mantine-color-dark-5);
-        border: 3px solid transparent;
-        color: white;
-        font-family: var(--font-body);
-        transition: border .2s;
+  & *:is(input, textarea) {
+    border-radius: 2rem;
+    background-color: var(--mantine-color-dark-5);
+    border: 3px solid transparent;
+    color: white;
+    font-family: var(--font-body);
+    transition: border .2s;
 
-        &:focus {
-            border: 3px solid var(--mantine-color-paleRed-5);
-        }
+    &:focus {
+      border: 3px solid var(--mantine-color-paleRed-5);
     }
+  }
 
-    & *:is(textarea) {
-        padding: 1rem;
-        resize: vertical;
-        max-height: 10lh;
-        line-height: 1;
-    }
+  & *:is(textarea) {
+    padding: 1rem;
+    resize: vertical;
+    min-height: 8lh;
+    max-height: 20lh;
+    height: 8lh;
+    line-height: 1;
+  }
 }
 
 @media screen and (max-width: 250px) {
-    .form .input {
-        min-width: unset;
-    }
+  .form .input {
+    min-width: unset;
+  }
 }
 
 .section {
-    background-color: var(--mantine-color-dark-6);
-    padding: 1rem 2rem;
-    border-radius: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: .5rem;
-    overflow: hidden;
+  background-color: var(--mantine-color-dark-6);
+  padding: 1rem 2rem;
+  border-radius: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  overflow: hidden;
 }
 
 .sectionLabel {
-    font-weight: 100 !important;
-    font-family: var(--font-title);
+  font-weight: 100 !important;
+  font-family: var(--font-title);
 }
 
 .featureCard {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: left;
+  align-items: flex-start;
+  padding: 1rem 1.25rem;
+  background-color: var(--mantine-color-dark-5);
+  border-radius: 2rem;
+  width: 100%;
+
+  & p {
+    margin: 0;
+  }
+
+  & h4 {
+    font-family: var(--font-title);
+    font-weight: 100;
+  }
+
+  & .quantityInput {
+    width: 20px;
+    height: 100%;
     display: flex;
-    flex-direction: row;
-    gap: 1rem;
-    justify-content: left;
-    align-items: flex-start;
-    padding: 1rem 1.25rem;
-    background-color: var(--mantine-color-dark-5);
-    border-radius: 2rem;
-    width: 100%;
+    flex-direction: column;
+    margin: auto 0;
+    gap: .5rem;
+    justify-content: space-between;
+    align-items: center;
 
-    & p {
-        margin: 0;
+    & .amount {
+      &:focus {
+        outline: none;
+      }
     }
 
-    & h4 {
-        font-family: var(--font-title);
-        font-weight: 100;
+    & .quantityButton {
+      border-radius: 2rem;
+      color: white;
+      background-color: var(--mantine-color-dark-3);
+      font-size: 1.5rem;
+      padding: .5rem;
+      cursor: pointer;
+      transition: background-color .2s;
+      opacity: 1;
+      transition: opacity .2s;
+
+      &:disabled {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      &:hover {
+        background-color: var(--mantine-color-dark-4);
+      }
     }
+  }
 
-    & .quantityInput {
-        width: 20px;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        margin: auto 0;
-        gap: .5rem;
-        justify-content: space-between;
-        align-items: center;
+  & .info {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    flex-grow: 1;
 
-        & .amount {
-            &:focus{
-                outline: none;
-            }
-        }
+    & .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
 
-        & .quantityButton {
-            border-radius: 2rem;
-            color: white;
-            background-color: var(--mantine-color-dark-3);
-            font-size: 1.5rem;
-            padding: .5rem;
-            cursor: pointer;
-            transition: background-color .2s;
-            opacity: 1;
-            transition: opacity .2s;
-
-            &:disabled{
-                opacity: 0;
-            }
-
-            &:hover {
-                background-color: var(--mantine-color-dark-4);
-            }
-        }
-    }
-
-    & .info {
-        display: flex;
-        flex-direction: column;
-        gap: .5rem;
+      & .price {
+        text-align: right;
+        color: var(--mantine-color-paleRed-5);
         flex-grow: 1;
-
-        & .footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-
-            & .price {
-                text-align: right;
-                color: var(--mantine-color-paleRed-5);
-                flex-grow: 1;
-            }
-        }
+      }
     }
+  }
 }
 
 .disclaimer {
-    font-size: .8rem;
-    color: var(--mantine-color-yellow-3);
+  font-size: .8rem;
+  color: var(--mantine-color-yellow-3);
 }
 
 .item {
-    display: flex;
-    flex-direction: row;
-    gap: .5rem;
-    justify-content: left;
-    align-items: flex-start;
-    padding: 1rem 1.25rem;
-    background-color: var(--mantine-color-dark-5);
-    border-radius: 2rem;
-    width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: .5rem;
+  justify-content: left;
+  align-items: flex-start;
+  padding: 1rem 1.25rem;
+  background-color: var(--mantine-color-dark-5);
+  border-radius: 2rem;
+  width: 100%;
 
-    & p {
-        margin: 0;
-    }
+  & p {
+    margin: 0;
+  }
 
-    & .name {
-        font-weight: 500;
-    }
-    & .price {
-        text-align: right;
-        flex-grow: 1;
-    }
+  & .name {
+    font-weight: 500;
+  }
+
+  & .price {
+    text-align: right;
+    flex-grow: 1;
+  }
 }
 
 .price {
-    color: var(--mantine-color-paleRed-5);
+  color: var(--mantine-color-paleRed-5);
 }
 
 @media screen and (max-width: 440px) {
-    .featureCard {
-        flex-direction: column;
-        & .quantityInput {
-            width: 100%;
-            flex-direction: row-reverse;
-            gap: 1rem;
-            justify-content: space-between;
-            align-items: center;
-        }
+  .featureCard {
+    flex-direction: column;
+
+    & .quantityInput {
+      width: 100%;
+      flex-direction: row-reverse;
+      gap: 1rem;
+      justify-content: space-between;
+      align-items: center;
     }
+  }
 }
 
 @media screen and (max-width: 820px) {
-    .footer {
-        flex-direction: column;
-        gap: 1rem;
-        justify-content: flex-start;
-        align-items: stretch;
+  .footer {
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: flex-start;
+    align-items: stretch;
 
-        & .disclaimer {
-            text-align: left;
-            width: 100%;
-        }
-
-        & .price {
-            text-align: right;
-            width: 100%;
-        }
+    & .disclaimer {
+      text-align: left;
+      width: 100%;
     }
+
+    & .price {
+      text-align: right;
+      width: 100%;
+    }
+  }
 }
 
 .submitButton {
-    width: min-content;
-    border-radius: 2rem;
+  width: min-content;
+  border-radius: 2rem;
 }
 
 .endSection {
-    background-color: var(--mantine-color-dark-6);
-    padding: 1rem 2rem;
-    border-radius: 2rem;
-    display: flex;
-    box-shadow: 0 1.4rem 1rem 2rem var(--mantine-color-dark-7);
-    flex-direction: row;
-    justify-content: right;
-    align-items: center;
-    gap: 2rem;
-    position: sticky;
-    bottom: 1rem;
-    & > * {
-        margin: auto 0;
-        line-height: 1;
-    }
-    & .price {
-        color: var(--mantine-color-paleRed-5);
-    }
+  background-color: var(--mantine-color-dark-6);
+  padding: 1rem 2rem;
+  border-radius: 2rem;
+  display: flex;
+  box-shadow: 0 1.4rem 1rem 2rem var(--mantine-color-dark-7);
+  flex-direction: row;
+  justify-content: right;
+  align-items: center;
+  gap: 2rem;
+  position: sticky;
+  bottom: 1rem;
+
+  & > * {
+    margin: auto 0;
+    line-height: 1;
+  }
+
+  & .price {
+    color: var(--mantine-color-paleRed-5);
+  }
 }

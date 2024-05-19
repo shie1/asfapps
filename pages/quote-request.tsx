@@ -1,7 +1,22 @@
 import { QuoteRequestForm } from "@/components/QuoteRequestForm";
 import { Container, Text, Title } from "@mantine/core";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 export default function QuoteRequestPage() {
+    const router = useRouter();
+    const [killSignal, setKillSignal] = useState(false);
+
+    useEffect(() => {
+        const listener = () => {
+            setKillSignal(true);
+        }
+        router.events.on("routeChangeStart", listener)
+        return () => {
+            router.events.off("routeChangeStart", listener)
+        }
+    }, [router]);
+
     return (
         <main>
             <Container size="md" px="xl" pb="xl">
@@ -19,7 +34,7 @@ export default function QuoteRequestPage() {
                 }}>
                     A feltűntetett árak tájékoztató jellegűek.
                 </Text>
-                <QuoteRequestForm />
+                <QuoteRequestForm killSignal={killSignal} />
             </Container>
         </main>
     );

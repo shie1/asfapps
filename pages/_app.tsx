@@ -1,12 +1,13 @@
 import '@mantine/core/styles.css';
 import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
-import { createTheme, MantineProvider } from '@mantine/core';
+import { createTheme, MantineProvider, Title } from '@mantine/core';
 import { DoubleHeader } from "@/components/DoubleHeader";
 import { Righteous, Montserrat, Comfortaa } from "next/font/google";
 import { AnimatePresence, motion } from 'framer-motion';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+import { useState } from 'react';
 
 const titleFont = Righteous({
     weight: "400",
@@ -51,6 +52,7 @@ const theme = createTheme({
 
 export default function App({ Component, pageProps }: AppProps) {
     const router = useRouter();
+    const [loadAnimationEnded, setLoadAnimationEnded] = useState(false);
     return (<div className={`${titleFont.variable} ${bodyFont.variable}`}>
         <Head>
             <title>Sonkoly Bence</title>
@@ -59,7 +61,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <MantineProvider withCssVariables defaultColorScheme="dark" theme={theme}>
             <DoubleHeader />
             <AnimatePresence>
-                <motion.div key={router.route} initial="pageInitial" animate="pageAnimate" exit="pageExit" style={{
+                {loadAnimationEnded && (<motion.div key={router.route} initial="pageInitial" animate="pageAnimate" exit="pageExit" style={{
                     width: "100%",
                 }} variants={{
                     pageInitial: {
@@ -82,8 +84,47 @@ export default function App({ Component, pageProps }: AppProps) {
                     type: "just",
                 }}>
                     <Component {...pageProps} />
-                </motion.div>
+                </motion.div>)}
             </AnimatePresence>
+            <motion.div className="animatedOverlay"
+                initial={{
+                    transform: "translateX(0%)",
+                }}
+                animate={{
+                    transform: "translateX(100%)",
+                }}
+                transition={{
+                    duration: 0.4,
+                    type: "just",
+                    delay: 1.5,
+                }}
+                onAnimationStart={() => {
+                    setTimeout(() => {
+                        setLoadAnimationEnded(true);
+                    }, 1150);
+                }}
+            >
+                <Title order={1} style={{
+                    fontFamily: "var(--font-title)",
+                    fontWeight: 100,
+                    fontSize: "24vmin",
+                    textWrap: "wrap",
+                    lineHeight: 1,
+                    color: "var(--mantine-color-paleRed-6)",
+                }}>
+                    Sonkoly Bence
+                </Title>
+                <Title order={2} style={{
+                    fontFamily: "var(--font-body)",
+                    fontSize: "10vmin",
+                    fontWeight: 400,
+                    lineHeight: 1,
+                    fontStyle: "italic",
+                    color: "var(--mantine-color-paleRed-6)",
+                }}>
+                    Kell egy jó weboldal?
+                </Title>
+            </motion.div>
         </MantineProvider>
     </div>);
 }
