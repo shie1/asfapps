@@ -9,6 +9,10 @@ export default function QuoteRequestPage() {
 
     useEffect(() => {
         const listener = () => {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+            });
             setKillSignal(true);
         }
         router.events.on("routeChangeStart", listener)

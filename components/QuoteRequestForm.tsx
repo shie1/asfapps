@@ -2,7 +2,7 @@ import { ActionIcon, Box, Button, Checkbox, Group, NumberInput, Stack, Text, Tex
 import { useForm, UseFormReturnType } from "@mantine/form";
 import classes from "@/styles/QuoteRequestFrom.module.css";
 import { AnimatePresence, motion } from "framer-motion";
-import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { PriceRender } from "./PriceRender";
 
 const Item = ({ name, price, quantity }: {
@@ -172,7 +172,9 @@ const summaryDefaults = [
   }
 ]
 
-export function QuoteRequestForm({ killSignal }: {
+export function QuoteRequestForm({
+  killSignal
+}: {
   killSignal?: boolean;
 }) {
   const form = useForm<{
@@ -206,8 +208,11 @@ export function QuoteRequestForm({ killSignal }: {
   }, [form.values.client.name, form.values.client.email, form.values.client.phone]);
 
   const showFeatures = useMemo(() => {
+    if (killSignal) {
+      return false
+    }
     return form.values.project.name && form.values.project.description && showProjectDetails;
-  }, [form.values.project.name, form.values.project.description, showProjectDetails]);
+  }, [form.values.project.name, form.values.project.description, showProjectDetails, killSignal]);
 
   const showSummary = useMemo(() => {
     return showFeatures;
@@ -274,7 +279,7 @@ export function QuoteRequestForm({ killSignal }: {
               >
                 <Title className={classes.sectionLabel} order={3}>Funkciók</Title>
                 <Stack>
-                  {!killSignal && websiteFeaturesList.map(feature => (
+                  {websiteFeaturesList.map(feature => (
                     <WebsiteFeatureCheckbox key={feature.value} feature={feature} />
                   ))}
                 </Stack>
