@@ -29,10 +29,12 @@ const QuoteFormContext = createContext<UseFormReturnType<{
   };
 }> | null>(null);
 
+const notNumberRegex = /[^0-9]*/g
+
 function WebsiteFeatureCheckbox({ feature }: {
   feature: WebsiteFeature,
 }) {
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState(feature.quantification?.amount || 0);
   const form = useContext(QuoteFormContext)!;
 
   const checked = useMemo(() => {
@@ -41,17 +43,19 @@ function WebsiteFeatureCheckbox({ feature }: {
 
   useEffect(() => {
     if (!feature.quantification) return;
-    if (amount < 0) setAmount(0);
+    if (amount < 0 || !amount) {
+      setAmount(0)
+    }
     if (amount === 0) {
-      form.setFieldValue("project.features", form.values.project.features.filter(f => f.label !== feature.label));
+      form.setFieldValue("project.features", prevFeatures => prevFeatures.filter(f => f.label !== feature.label));
     } else {
       if (form.values.project.features.find(f => f.label === feature.label)) {
-        form.setFieldValue("project.features", form.values.project.features.map(f => f.label === feature.label ? { ...f, quantification: { ...f.quantification, amount: amount, name: f.quantification?.name || "" } } : f));
+        form.setFieldValue("project.features", prevFeatures => prevFeatures.map(f => f.label === feature.label ? { ...f, quantification: { ...f.quantification, amount: amount, name: f.quantification?.name || "" } } : f));
       } else {
-        form.setFieldValue("project.features", [...form.values.project.features, { ...feature, quantification: { ...feature.quantification, amount: amount, name: feature.quantification?.name || "" } }]);
+        form.setFieldValue("project.features", prevFeatures => [...prevFeatures, { ...feature, quantification: { ...feature.quantification, amount: amount, name: feature.quantification?.name || "" } }]);
       }
     }
-  }, [amount, feature, form])
+  }, [amount, feature])
 
   return (<Box className={classes.featureCard} key={feature.value}>
     {feature.quantification ?
@@ -62,6 +66,7 @@ function WebsiteFeatureCheckbox({ feature }: {
           className={classes.amount}
           suppressContentEditableWarning
           onBlur={(e) => {
+            e.currentTarget.innerText = e.currentTarget.innerText.replace(notNumberRegex, '')
             const value = parseInt(e.currentTarget.innerText);
             if (!isNaN(value)) {
               setAmount(value);
@@ -71,8 +76,8 @@ function WebsiteFeatureCheckbox({ feature }: {
         <ActionIcon disabled={amount < 1} className={classes.quantityButton} size="sm" onClick={() => setAmount(amount - 1)}>-</ActionIcon>
       </div>
       :
-      <Checkbox className={classes.checkBox} type="checkbox" id={feature.value} onClick={() => {
-        if (checked) {
+      <Checkbox className={classes.checkBox} type="checkbox" id={feature.value} onChange={(check) => {
+        if (!check) {
           form.setFieldValue("project.features", form.values.project.features.filter(f => f.label !== feature.label));
         } else {
           form.setFieldValue("project.features", [...form.values.project.features, feature]);
@@ -83,7 +88,7 @@ function WebsiteFeatureCheckbox({ feature }: {
       <p className={classes.description}>{feature.description}</p>
       <div className={classes.footer}>
         {feature.disclaimer && <p className={classes.disclaimer}>{feature.disclaimer}</p>}
-        <p className={classes.price}>{feature.price.increase} Ft{feature.quantification ? `/${feature.quantification.name}` : ""}</p>
+        <p className={classes.price}><PriceRender value={feature.price.increase} />{feature.quantification ? `/${feature.quantification.name}` : ""}</p>
       </div>
     </label>
   </Box>)
@@ -172,6 +177,8 @@ const summaryDefaults = [
   }
 ]
 
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
 export function QuoteRequestForm({
   killSignal
 }: {
@@ -201,6 +208,13 @@ export function QuoteRequestForm({
         features: [],
       }
     },
+    validateInputOnBlur: true,
+    validate: {
+      client: {
+        name: (value) => value.length > 0 ? null : "Kérlek add meg a neved!",
+        email: (value) => value.length > 0 ? (value.match(emailRegex) ? null : "Kérlek érvényes email címet adj meg!") : "Kérlek add meg az email címed!",
+      }
+    }
   });
 
   const showProjectDetails = useMemo(() => {
@@ -246,8 +260,11 @@ export function QuoteRequestForm({
               <Title className={classes.sectionLabel} order={3}>Kapcsolattartási adatok</Title>
               <Group wrap="wrap">
                 <TextInput className={classes.input} label="Név" placeholder="Nagy Csaba" required {...form.getInputProps("client.name")} />
-                <TextInput className={classes.input} label="Email" placeholder="nagy.csaba@gmail.com" required {...form.getInputProps("client.email")} />
-                <TextInput className={classes.input} label="Telefonszám" placeholder="+36301234567" required {...form.getInputProps("client.phone")} />
+                <TextInput onBlur={() => {
+                  console.log("aaa")
+                  form.validateField("client.email")
+                }} className={classes.input} label="Email" placeholder="nagy.csaba@gmail.com" required {...form.getInputProps("client.email")} />
+                <TextInput className={classes.input} label="Telefonszám" placeholder="+36301234567" {...form.getInputProps("client.phone")} />
               </Group>
             </Box>
             <AnimatePresence>
@@ -264,7 +281,7 @@ export function QuoteRequestForm({
                 <Title className={classes.sectionLabel} order={3}>Projekt adatok</Title>
                 <Stack>
                   <TextInput className={classes.input} label="Weboldal neve" placeholder="Webnév" required {...form.getInputProps("project.name")} />
-                  <Textarea className={classes.input} label="Projekt leírása" placeholder="Egy rövid leírás a weboldalról" required {...form.getInputProps("project.description")} />
+                  <Textarea className={classes.input} label="Ismertetés" placeholder="Weboldal célja, ötletek, stb..." required {...form.getInputProps("project.description")} />
                 </Stack>
               </motion.div>}
               {showFeatures && <motion.div key="WebsiteFeatures" className={classes.section}
@@ -304,7 +321,7 @@ export function QuoteRequestForm({
                     ))}
                   </Stack>
                 </motion.div>
-                <motion.div key="summary" className={classes.endSection}
+                <motion.div key="summaryBottom" className={classes.endSection}
                   transition={{
                     duration: 0.4,
                     type: "just",

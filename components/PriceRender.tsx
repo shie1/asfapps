@@ -6,7 +6,8 @@ function PriceRenderRoot({ value }: {
     const currency = new Intl.NumberFormat('hu-HU', {
         style: 'currency',
         currency: 'HUF',
-        minimumFractionDigits: 0
+        minimumFractionDigits: 0,
+        useGrouping: true,
     });
 
     return <span>{currency.format(value)}</span>;
