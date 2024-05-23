@@ -77,10 +77,10 @@ function WebsiteFeatureCheckbox({ feature }: {
       </div>
       :
       <Checkbox className={classes.checkBox} type="checkbox" id={feature.value} onChange={(check) => {
-        if (!check) {
-          form.setFieldValue("project.features", form.values.project.features.filter(f => f.label !== feature.label));
+        if (check.currentTarget.checked) {
+          form.setFieldValue("project.features", prevFeatures => [...prevFeatures, feature]);
         } else {
-          form.setFieldValue("project.features", [...form.values.project.features, feature]);
+          form.setFieldValue("project.features", prevFeatures => prevFeatures.filter(f => f.label !== feature.label));
         }
       }} checked={checked} />}
     <label className={classes.info} htmlFor={feature.value}>
