@@ -45,6 +45,18 @@ const theme = createTheme({
             "#6b31b2",
             "#5f2aa0",
             "#52228d"
+        ],
+        mainMix: [
+            "#ffedfd",
+            "#f5dbf0",
+            "#e6b6dc",
+            "#d68dc6",
+            "#c96cb4",
+            "#c156a9",
+            "#be4aa5",
+            "#a83b91",
+            "#963282",
+            "#852871"
         ]
     },
     primaryColor: "paleRed",
@@ -109,10 +121,15 @@ export default function App({ Component, pageProps }: AppProps) {
                     fontWeight: 100,
                     fontSize: "24vmin",
                     textWrap: "wrap",
-                    lineHeight: 1,
+                    lineHeight: 1.2,
+                    fontStyle: "italic",
                     color: "var(--mantine-color-paleRed-6)",
                 }}>
-                    Sonkoly Bence
+                    <span>asf</span><span style={{
+                        color: "var(--mantine-color-mainMix-6)",
+                    }}>ap</span><span style={{
+                        color: "var(--mantine-color-paleViolet-5)",
+                    }}>ps</span>
                 </Title>
                 <Title order={2} style={{
                     fontFamily: "var(--font-body)",
@@ -122,7 +139,9 @@ export default function App({ Component, pageProps }: AppProps) {
                     fontStyle: "italic",
                     color: "var(--mantine-color-paleRed-6)",
                 }}>
-                    Kell egy jó weboldal?
+                    Online, <span style={{
+                        color: "var(--mantine-color-paleViolet-6)",
+                    }}>megfizethetően</span>
                 </Title>
             </motion.div>
         </MantineProvider>

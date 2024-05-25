@@ -75,8 +75,16 @@ export function DoubleHeader() {
                     fontSize: "2.4rem",
                     fontFamily: "var(--font-title)",
                     lineClamp: 1,
+                    fontStyle: "italic",
+                    paddingRight: 5,
                     overflow: "hidden",
-                }}>Sonkoly Bence</Title>
+                }}>
+                    <span>asf</span><span style={{
+                        color: "var(--mantine-color-mainMix-6)",
+                    }}>ap</span><span style={{
+                        color: "var(--mantine-color-paleViolet-5)",
+                    }}>ps</span>
+                </Title>
                 <Box className={classes.links} visibleFrom="sm">
                     <Group justify="flex-end">{secondaryItems}</Group>
                     <Group gap={0} justify="flex-end" className={classes.mainLinks}>

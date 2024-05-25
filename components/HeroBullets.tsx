@@ -10,7 +10,7 @@ export function HeroBullets() {
             <div className={classes.inner}>
                 <div className={classes.content}>
                     <Title className={classes.title}>
-                        Légyél online,<br /> legyél <span className={classes.highlight}><motion.div style={{
+                        Legyél online,<br /> legyél <span className={classes.highlight}><motion.div style={{
                             position: 'absolute',
                             display: 'inline-block',
                             width: '100%',
@@ -51,7 +51,7 @@ export function HeroBullets() {
                             Unod már, hogy a versenytársaid <b>elhúznak melletted</b>?
                         </List.Item>
                         <List.Item>
-                            <b>Elérhetővé</b> szeretnéd tenni a szolgáltatásaidat és termékeidet?
+                            Eleged van abból, hogy milliókat kérnek egy <b>egyszerű weboldalért</b>?
                         </List.Item>
                         <List.Item>
                             Szeretnéd, ha a weboldalad <b>nem csak működő, de szép is</b> lenne?
