@@ -8,6 +8,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { useState } from 'react';
+import { Footer } from '@/components/Footer';
 
 const titleFont = Righteous({
     weight: "400",
@@ -67,7 +68,7 @@ export default function App({ Component, pageProps }: AppProps) {
     const [loadAnimationEnded, setLoadAnimationEnded] = useState(false);
     return (<div className={`${titleFont.variable} ${bodyFont.variable}`}>
         <Head>
-            <title>Sonkoly Bence</title>
+            <title>asfapps</title>
             <meta name="viewport" content="width=device-width, initial-scale=1" />
         </Head>
         <MantineProvider withCssVariables defaultColorScheme="dark" theme={theme}>
@@ -75,6 +76,7 @@ export default function App({ Component, pageProps }: AppProps) {
             <AnimatePresence>
                 {loadAnimationEnded && (<motion.div key={router.route} initial="pageInitial" animate="pageAnimate" exit="pageExit" style={{
                     width: "100%",
+                    minHeight: "calc(100vh - ((5.25rem * var(--mantine-scale)) + 7.5rem * var(--mantine-scale)))",
                 }} variants={{
                     pageInitial: {
                         position: "absolute",
@@ -98,6 +100,7 @@ export default function App({ Component, pageProps }: AppProps) {
                     <Component {...pageProps} />
                 </motion.div>)}
             </AnimatePresence>
+            <Footer />
             <motion.div className="animatedOverlay"
                 initial={{
                     transform: "translateX(0%)",

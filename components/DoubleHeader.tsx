@@ -5,17 +5,21 @@ import classes from '@/styles/DoubleHeader.module.css';
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-const userLinks = [
-    { link: "https://github.com/shie1/", label: 'GitHub' },
-    { link: "https://www.linkedin.com/in/bence-sonkoly-219606280/", label: 'LinkedIn' },
-];
+const userLinks: {
+    link: string,
+    label: string,
+}[] = [
+    ];
 
-const mainLinks = [
-    { link: '/', label: 'Főoldal' },
-    { link: '/projects', label: 'Projektek' },
-    { link: '/quote-request', label: 'Ajánlatkérés' },
-    { link: '/contact', label: 'Kapcsolat' },
-];
+const mainLinks: {
+    link: string,
+    label: string
+}[] = [
+        { link: '/', label: 'Főoldal' },
+        { link: '/projects', label: 'Projektek' },
+        { link: '/quote-request', label: 'Ajánlatkérés' },
+        { link: '/contact', label: 'Kapcsolat' },
+    ];
 
 export function DoubleHeader() {
     const [opened, { toggle }] = useDisclosure(false);
