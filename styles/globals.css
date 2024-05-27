@@ -23,3 +23,7 @@ body {
   padding: 20px;
   text-align: left;
 }
+
+*::selection {
+  background: var(--mantine-color-paleViolet-light);
+}

@@ -1,5 +1,5 @@
 import { CardsContainer, ProjectCard } from "@/components/ProjectCard";
-import { Container, Grid, Title } from "@mantine/core";
+import { Container, Grid, Stack, Text, Title } from "@mantine/core";
 
 export const ProjectCards = () => (<CardsContainer>
     <ProjectCard
@@ -28,11 +28,19 @@ export default function Projects() {
     return (<>
         <main>
             <Container size="md" px="xl" pb="xl">
-                <Title style={{
-                    fontFamily: "var(--font-title)",
-                    fontWeight: 100,
-                    marginBottom: 30,
-                }}>Projektjeim</Title>
+                <Stack mb="md" gap={2}>
+                    <Title style={{
+                        lineHeight: 1,
+                        fontFamily: "var(--font-title)",
+                        fontWeight: 100,
+                    }}>Referenciák</Title>
+                    <Text style={{
+                        fontFamily: "var(--font-body)",
+                        fontWeight: 100,
+                    }}>
+                        Kiemelt projektek, melyek tükrözik csapatunk képességeit.
+                    </Text>
+                </Stack>
                 <ProjectCards />
             </Container >
         </main>

@@ -1,8 +1,9 @@
-import { Image, Container, Title, Button, Group, Text, List, ThemeIcon, rem } from '@mantine/core';
+import { Container, Title, Button, Group, Text, List, ThemeIcon, rem } from '@mantine/core';
 import classes from '@/styles/HeroBullets.module.css';
 import web from "./web.svg"
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import Image from "next/image";
 
 export function HeroBullets() {
     return (
@@ -66,7 +67,7 @@ export function HeroBullets() {
                         </Link>
                     </Group>
                 </div>
-                <Image alt="" loading='eager' draggable={false} src={web.src} className={classes.image} />
+                <Image width={320} height={580} alt="" loading='eager' draggable={false} src={web.src} className={classes.image} />
             </div>
         </div>
     );

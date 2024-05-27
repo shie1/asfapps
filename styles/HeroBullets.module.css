@@ -54,7 +54,7 @@
 
 .image {
     height: rem(560px);
-    object-fit: contain;
+    width: rem(300px);
     margin: auto;
     rotate: 5deg;
     animation: floating 5s infinite ease-in-out;

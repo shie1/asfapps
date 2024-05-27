@@ -1,19 +1,21 @@
-import { Image, Accordion, Grid, Container, Title } from '@mantine/core';
+import { Accordion, Grid, Container, Title } from '@mantine/core';
 import classes from '@/styles/FaqWithImage.module.css';
 import svg from './faq.svg';
+import Image from "next/image"
 
 export function FaqWithImage() {
     return (
         <div className={classes.wrapper}>
             <Grid id="faq-grid" gutter={50}>
                 <Grid.Col style={{
-                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                     paddingBottom: 0,
                     paddingTop: 0,
                 }} span={{ base: 12, md: 6 }}>
-                    <Image style={{
-                        margin: 'auto',
-                    }} src={svg.src} alt="Gyakran ismételt kérdések" />
+                    <div className={classes.image}>
+                        <Image height={350} width={400} src={svg.src} alt="Gyakran ismételt kérdések" />
+                    </div>
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, md: 6 }}>
                     <Title order={2} ta="center" className={classes.title}>
@@ -39,10 +41,10 @@ export function FaqWithImage() {
                         </Accordion.Item>
                         <Accordion.Item className={classes.item} value="3">
                             <Accordion.Control>
-                                Milyen technológiával dolgozol?
+                                Milyen technológiákat használtok?
                             </Accordion.Control>
                             <Accordion.Panel>
-                                A weboldalakat a Next.js keretrendszerrel készítem, amely a React.js-t használja. Ez jelenleg az egyik legelterjedtebb és leggyorsabb technológia a weboldalak készítésére.
+                                A weboldalakat a Next.js keretrendszerrel készítjük, amely a React.js-t használja. Ez jelenleg az egyik legelterjedtebb és leggyorsabb technológia a weboldalak készítésére.
                             </Accordion.Panel>
                         </Accordion.Item>
                         <Accordion.Item className={classes.item} value="4">
@@ -50,7 +52,7 @@ export function FaqWithImage() {
                                 Milyen tartalommal kell rendelkeznem a weboldal elindításához?
                             </Accordion.Control>
                             <Accordion.Panel>
-                                Szükség lesz szöveges tartalomra <i>(pl.: bemutatkozó szöveg, szolgáltatásleírások)</i> és képekre a weboldalához.<br />Ha segítségre van szüksége a tartalom létrehozásában, tudok segíteni.
+                                Szükség lesz szöveges tartalomra <i>(pl.: bemutatkozó szöveg, szolgáltatásleírások)</i> és képekre a weboldalához.<br />Ha segítségre van szükséged a tartalom megírásában, természetesen tudunk segíteni.
                             </Accordion.Panel>
                         </Accordion.Item>
                     </Accordion>

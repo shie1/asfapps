@@ -1,5 +1,7 @@
 import classes from "@/styles/Footer.module.css";
 import { Container, Divider, Text } from "@mantine/core";
+import { CurrentYearRender } from "./CurrentYearRender";
+import { ProtectedEmailRender } from "./ProtectedEmailRender";
 
 export const Footer = () => {
     return (
@@ -38,19 +40,11 @@ export const Footer = () => {
                         </Text>
                         <div className={classes.divider} />
                     </div>
-                    <Text style={{
-                        fontFamily: "var(--font-body)",
-                        fontSize: ".8rem",
-                        color: "var(--mantine-color-dark-0)",
-                    }}>
+                    <Text className={classes.normalText}>
                         Modern webes megoldások cégeknek és magánszemélyeknek
                     </Text>
-                    <Text style={{
-                        fontFamily: "var(--font-body)",
-                        fontSize: ".8rem",
-                        color: "var(--mantine-color-dark-0)",
-                    }}>
-                        &copy; Skoda Dávid EV.
+                    <Text className={classes.normalText}>
+                        <CurrentYearRender /> &copy; Skoda Dávid EV. | Minden jog fenntartva.
                     </Text>
                 </div>
                 <div className={classes.column}>
@@ -61,26 +55,17 @@ export const Footer = () => {
                     }}>
                         Cégadatok
                     </Text>
-                    <Text style={{
-                        fontFamily: "var(--font-body)",
-                        fontSize: ".8rem",
-                        color: "var(--mantine-color-dark-0)",
-                    }}>
+                    <Text className={classes.normalText}>
                         Skoda Dávid EV.
                     </Text>
-                    <Text style={{
-                        fontFamily: "var(--font-body)",
-                        fontSize: ".8rem",
-                        color: "var(--mantine-color-dark-0)",
-                    }}>
+                    <Text className={classes.normalText}>
                         Adószám: HU 45755754-2-27
                     </Text>
-                    <Text style={{
-                        fontFamily: "var(--font-body)",
-                        fontSize: ".8rem",
-                        color: "var(--mantine-color-dark-0)",
-                    }}>
+                    <Text className={classes.normalText}>
                         Nyilvántartási szám: 58338658
+                    </Text>
+                    <Text className={classes.normalText}>
+                        Email: <ProtectedEmailRender email="info@asfap.hu" />
                     </Text>
                 </div>
             </Container>

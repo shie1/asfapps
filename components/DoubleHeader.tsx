@@ -16,7 +16,7 @@ const mainLinks: {
     label: string
 }[] = [
         { link: '/', label: 'Főoldal' },
-        { link: '/projects', label: 'Projektek' },
+        { link: '/references', label: 'Referenciák' },
         { link: '/quote-request', label: 'Ajánlatkérés' },
         { link: '/contact', label: 'Kapcsolat' },
     ];
@@ -73,6 +73,7 @@ export function DoubleHeader() {
         <header className={classes.header}>
             <Container className={classes.inner}>
                 <Title style={{
+                    cursor: "pointer",
                     color: "var(--mantine-color-paleRed-5)",
                     lineHeight: 1.2,
                     height: "1lh",
@@ -82,6 +83,8 @@ export function DoubleHeader() {
                     fontStyle: "italic",
                     paddingRight: 5,
                     overflow: "hidden",
+                }} onClick={()=>{
+                    router.push("/")
                 }}>
                     <span>asf</span><span style={{
                         color: "var(--mantine-color-mainMix-6)",

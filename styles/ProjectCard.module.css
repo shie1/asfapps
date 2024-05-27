@@ -87,6 +87,12 @@
             color: var(--mantine-color-paleRed-7);
             margin-bottom: .2rem;
         }
+
+        &:is(.card[data-interactable="false"]) {
+            & .title {
+                color: var(--mantine-color-dark-2);
+            }
+        }
     }
 
     .container>*:nth-child(odd) {
@@ -129,7 +135,7 @@
         filter: brightness(1.1);
 
         & img {
-            transform: scale(1.1);
+            transform: scale(1.1) rotate(-2deg);
         }
     }
 }

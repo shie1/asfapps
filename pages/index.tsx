@@ -3,7 +3,6 @@ import { HeroBullets } from "@/components/HeroBullets";
 import { FeaturesAsymmetrical } from "@/components/FeaturesAsymmetrical";
 import { Container, Divider, Title } from "@mantine/core";
 import { FaqWithImage } from "@/components/FaqWithImage";
-import { ProjectCards } from "./projects";
 
 export default function Home() {
   return (
@@ -14,7 +13,7 @@ export default function Home() {
           <Title style={{
             fontFamily: "var(--font-title)",
             fontWeight: 100,
-          }} order={2} my={30}>Szolgáltatásaim</Title>
+          }} order={2} my={30}>Ezeket garantáljuk!</Title>
           <FeaturesAsymmetrical />
           <FaqWithImage />
         </Container>
