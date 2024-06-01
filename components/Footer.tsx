@@ -29,13 +29,13 @@ export const Footer = () => {
                         <Text style={{
                             fontFamily: "var(--font-body)",
                             fontSize: "1.6rem",
-                            fontWeight: 400,
+                            fontWeight: 500,
                             lineHeight: 1,
                             fontStyle: "italic",
                             color: "var(--mantine-color-paleRed-6)",
                         }}>
                             Online, <span style={{
-                                color: "var(--mantine-color-paleViolet-6)",
+                                color: "var(--mantine-color-paleViolet-5)",
                             }}>megfizethetően</span>
                         </Text>
                         <div className={classes.divider} />

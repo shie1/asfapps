@@ -143,7 +143,7 @@ export default function App({ Component, pageProps }: AppProps) {
                     color: "var(--mantine-color-paleRed-6)",
                 }}>
                     Online, <span style={{
-                        color: "var(--mantine-color-paleViolet-6)",
+                        color: "var(--mantine-color-paleViolet-5)",
                     }}>megfizethetően</span>
                 </Title>
             </motion.div>
