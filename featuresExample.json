@@ -1,0 +1,67 @@
+[
+  {
+    "value": "forms",
+    "label": "Űrlapok",
+    "description": "Űrlapokkal gyűjthetünk adatokat a felhasználóktól, például kapcsolatfelvételi űrlapok.",
+    "quantification": {
+      "name": "űrlap"
+    },
+    "price": {
+      "increase": 5990
+    }
+  },
+  {
+    "value": "blog",
+    "label": "Tartalomkezelő rendszer",
+    "description": "Módosítható lesz az oldal tartalma anélkül, hogy fejlesztő segítségét kérnénk. Ez lehet például egy blog, egy webshop, de akár lehet egy egyszerű aloldal tartalmának módosítása is.",
+    "price": {
+      "increase": 49900
+    }
+  },
+  {
+    "value": "pwa",
+    "label": "PWA: Letölthető weboldal és offline működés",
+    "description": "A weboldal letölthető lesz a felhasználók számítógépére vagy telefonjára, és offline is használható lesz.",
+    "price": {
+      "increase": 9990
+    }
+  },
+  {
+    "value": "google-analytics",
+    "label": "Google Analytics integráció",
+    "description": "Érdekel mennyi látogatód van, honnan jönnek, és mit csinálnak az oldaladon? Beállítjuk a Google Analytics-et az oldaladhoz.",
+    "price": {
+      "increase": 4990
+    }
+  },
+  {
+    "value": "ecommerce",
+    "label": "Fizetési rendszer",
+    "description": "Szeretnél értékesíteni termékeket, vagy szolgáltatásokat? Beépíthetjük a fizetési rendszert az oldalba.",
+    "price": {
+      "increase": 19500
+    },
+    "disclaimer": "A fizetési rendszer beépítése nem tartalmazza a fizetési szolgáltató díjait."
+  },
+  {
+    "value": "localization",
+    "label": "Többnyelvűség",
+    "description": "Szeretnéd, hogy az oldalad több nyelven is elérhető legyen? Beállítjuk a többnyelvűséget az oldaladhoz.",
+    "quantification": {
+      "name": "nyelv"
+    },
+    "price": {
+      "increase": 18900
+    },
+    "disclaimer": "Az ár az oldal szövegének mennyiségétől függően változhat."
+  },
+  {
+    "value": "live-chat",
+    "label": "Élő csevegés",
+    "description": "Szeretnél élő csevegést az oldaladon? Beépíthetjük az élő csevegést az oldalba.",
+    "price": {
+      "increase": 6000
+    },
+    "disclaimer": "Az élő csevegés szolgáltatójának díjai nem tartalmazottak az árban."
+  }
+]

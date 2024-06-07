@@ -18,7 +18,6 @@ const mainLinks: {
         { link: '/', label: 'Főoldal' },
         { link: '/references', label: 'Referenciák' },
         { link: '/quote-request', label: 'Ajánlatkérés' },
-        { link: '/contact', label: 'Kapcsolat' },
     ];
 
 export function DoubleHeader() {

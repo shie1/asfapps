@@ -1,0 +1,17 @@
+.main {
+    * {
+        font-family: var(--font-body);
+    }
+}
+
+.quoteRequest {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    box-shadow: 0 0 5px var(--mantine-color-paleRed-filled);
+    width: 100%;
+    border-radius: 4rem;
+}

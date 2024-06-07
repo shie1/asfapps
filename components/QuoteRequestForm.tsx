@@ -2,8 +2,10 @@ import { ActionIcon, Box, Button, Checkbox, Group, NumberInput, Stack, Text, Tex
 import { useForm, UseFormReturnType } from "@mantine/form";
 import classes from "@/styles/QuoteRequestFrom.module.css";
 import { AnimatePresence, motion } from "framer-motion";
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { PriceRender } from "./PriceRender";
+import { FeatureReference, WebsiteFeature } from "./types";
+import { notifications } from "@mantine/notifications";
 
 const Item = ({ name, price, quantity }: {
   name: string;
@@ -25,7 +27,7 @@ const QuoteFormContext = createContext<UseFormReturnType<{
   project: {
     name: string;
     description: string;
-    features: WebsiteFeature[];
+    features: FeatureReference[];
   };
 }> | null>(null);
 
@@ -38,7 +40,7 @@ function WebsiteFeatureCheckbox({ feature }: {
   const form = useContext(QuoteFormContext)!;
 
   const checked = useMemo(() => {
-    return form.values.project.features.find(f => f.label === feature.label) !== undefined;
+    return form.values.project.features.find(f => f.value === feature.value) !== undefined;
   }, [form.values.project.features, feature]);
 
   useEffect(() => {
@@ -47,12 +49,12 @@ function WebsiteFeatureCheckbox({ feature }: {
       setAmount(0)
     }
     if (amount === 0) {
-      form.setFieldValue("project.features", prevFeatures => prevFeatures.filter(f => f.label !== feature.label));
+      form.setFieldValue("project.features", prevFeatures => prevFeatures.filter(f => f.value !== feature.value));
     } else {
-      if (form.values.project.features.find(f => f.label === feature.label)) {
-        form.setFieldValue("project.features", prevFeatures => prevFeatures.map(f => f.label === feature.label ? { ...f, quantification: { ...f.quantification, amount: amount, name: f.quantification?.name || "" } } : f));
+      if (checked) {
+        form.setFieldValue("project.features", prevFeatures => prevFeatures.map(f => f.value === feature.value ? { value: feature.value, quantity: amount } : f));
       } else {
-        form.setFieldValue("project.features", prevFeatures => [...prevFeatures, { ...feature, quantification: { ...feature.quantification, amount: amount, name: feature.quantification?.name || "" } }]);
+        form.setFieldValue("project.features", prevFeatures => [...prevFeatures, { value: feature.value, quantity: amount }]);
       }
     }
   }, [amount, feature])
@@ -78,9 +80,11 @@ function WebsiteFeatureCheckbox({ feature }: {
       :
       <Checkbox className={classes.checkBox} type="checkbox" id={feature.value} onChange={(check) => {
         if (check.currentTarget.checked) {
-          form.setFieldValue("project.features", prevFeatures => [...prevFeatures, feature]);
+          form.setFieldValue("project.features", prevFeatures => [...prevFeatures, {
+            value: feature.value,
+          }]);
         } else {
-          form.setFieldValue("project.features", prevFeatures => prevFeatures.filter(f => f.label !== feature.label));
+          form.setFieldValue("project.features", prevFeatures => prevFeatures.filter(f => f.value !== feature.value));
         }
       }} checked={checked} />}
     <label className={classes.info} htmlFor={feature.value}>
@@ -93,82 +97,6 @@ function WebsiteFeatureCheckbox({ feature }: {
     </label>
   </Box>)
 }
-
-export type WebsiteFeature = {
-  value: string;
-  label: string;
-  description: string;
-  quantification?: {
-    name: string; // "hó" | "űrlap" showing up as "Ft/hó" or "Ft/űrlap"
-    amount?: number
-  };
-  price: {
-    increase: number; // fixed price | [min, max] displayed as x-y Ft
-  };
-  disclaimer?: string;
-}
-
-const websiteFeaturesList: WebsiteFeature[] = [
-  {
-    value: "forms",
-    label: "Űrlapok",
-    description: "Űrlapokkal gyűjthetünk adatokat a felhasználóktól, például kapcsolatfelvételi űrlapok.",
-    quantification: {
-      name: "űrlap",
-    },
-    price: {
-      increase: 5990,
-    }
-  }, {
-    value: "blog",
-    label: "Tartalomkezelő rendszer",
-    description: "Módosítható lesz az oldal tartalma anélkül, hogy fejlesztő segítségét kérnénk. Ez lehet például egy blog, de akár lehet egy egyszerű aloldal tartalmának módosítása is.",
-    price: {
-      increase: 49900,
-    },
-  }, {
-    value: "pwa",
-    label: "PWA: Letölthető weboldal és offline működés",
-    description: "A weboldal letölthető lesz a felhasználók számítógépére vagy telefonjára, és offline is használható lesz.",
-    price: {
-      increase: 9990,
-    }
-  }, {
-    value: "google-analytics",
-    label: "Google Analytics integráció",
-    description: "Érdekel mennyi látogatód van, honnan jönnek, és mit csinálnak az oldaladon? Beállítjuk a Google Analytics-et az oldaladhoz.",
-    price: {
-      increase: 4990,
-    }
-  }, {
-    value: "ecommerce",
-    label: "Fizetési rendszer",
-    description: "Szeretnél értékesíteni termékeket, vagy szolgáltatásokat? Beépíthetjük a fizetési rendszert az oldalba.",
-    price: {
-      increase: 19500,
-    },
-    disclaimer: "A fizetési rendszer beépítése nem tartalmazza a fizetési szolgáltató díjait.",
-  }, {
-    value: "localization",
-    label: "Többnyelvűség",
-    description: "Szeretnéd, hogy az oldalad több nyelven is elérhető legyen? Beállítjuk a többnyelvűséget az oldaladhoz.",
-    quantification: {
-      name: "nyelv",
-    },
-    price: {
-      increase: 18900,
-    },
-    disclaimer: "Az ár az oldal szövegének mennyiségétől függően változhat."
-  }, {
-    value: "live-chat",
-    label: "Élő csevegés",
-    description: "Szeretnél élő csevegést az oldaladon? Beépíthetjük az élő csevegést az oldalba.",
-    price: {
-      increase: 6000,
-    },
-    disclaimer: "Az élő csevegés szolgáltatójának díjai nem tartalmazottak az árban."
-  }
-]
 
 const summaryDefaults = [
   {
@@ -193,7 +121,7 @@ export function QuoteRequestForm({
     project: {
       name: string;
       description: string;
-      features: WebsiteFeature[];
+      features: FeatureReference[]
     };
   }>({
     initialValues: {
@@ -214,8 +142,36 @@ export function QuoteRequestForm({
         name: (value) => value.length > 0 ? null : "Kérlek add meg a neved!",
         email: (value) => value.length > 0 ? (value.match(emailRegex) ? null : "Kérlek érvényes email címet adj meg!") : "Kérlek add meg az email címed!",
       }
-    }
+    },
   });
+
+  const [features, setFeatures] = useState<WebsiteFeature[]>([]);
+
+  const send = (values: typeof form.values = form.values) => {
+    fetch("/api/quote-request/send", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(values)
+    }).then((async res => {
+      const json = await res.json();
+      notifications.show({
+        title: json.title,
+        message: json.message,
+        color: res.status == 200 ? "teal" : "red",
+      })
+    })).catch(console.error);
+  }
+
+  useEffect(() => {
+    const ac = new AbortController();
+    fetch("/api/features", { signal: ac.signal })
+      .then(res => res.json())
+      .then(setFeatures)
+      .catch(() => { });
+    return () => ac.abort();
+  }, []);
 
   const showProjectDetails = useMemo(() => {
     return form.values.client.name && form.values.client.email && form.values.client.phone;
@@ -239,11 +195,18 @@ export function QuoteRequestForm({
   }[]>(() => {
     return [
       ...summaryDefaults,
-      ...form.values.project.features.map(feature => ({
-        name: feature.label,
-        price: feature.price.increase,
-        quantity: feature.quantification?.amount
-      }))
+      ...form.values.project.features.map(f => {
+        const feature = features.find(feature => feature.value === f.value);
+        if (!feature) return {
+          name: "Ismeretlen",
+          price: 0,
+        }
+        return {
+          name: feature.label,
+          price: feature.price.increase,
+          quantity: f.quantity,
+        }
+      })
     ]
   }, [form.values.project.features]);
 
@@ -254,7 +217,7 @@ export function QuoteRequestForm({
   return (<>
     <QuoteFormContext.Provider value={form}>
       <Box>
-        <form className={classes.form} onSubmit={form.onSubmit((values => console.log(values)))}>
+        <form className={classes.form} onSubmit={form.onSubmit(send)}>
           <Stack className={classes.stack} gap="md">
             <Box key="clientDetails" className={classes.section}>
               <Title className={classes.sectionLabel} order={3}>Kapcsolattartási adatok</Title>
@@ -280,7 +243,7 @@ export function QuoteRequestForm({
               >
                 <Title className={classes.sectionLabel} order={3}>Projekt adatok</Title>
                 <Stack>
-                  <TextInput className={classes.input} label="Weboldal neve" placeholder="Webnév" required {...form.getInputProps("project.name")} />
+                  <TextInput className={classes.input} label="Projekt neve" placeholder="Ruházati webshop, Shopify API kapcsolattal" required {...form.getInputProps("project.name")} />
                   <Textarea className={classes.input} label="Ismertetés" placeholder="Weboldal célja, ötletek, stb..." required {...form.getInputProps("project.description")} />
                 </Stack>
               </motion.div>}
@@ -296,7 +259,7 @@ export function QuoteRequestForm({
               >
                 <Title className={classes.sectionLabel} order={3}>Funkciók</Title>
                 <Stack>
-                  {websiteFeaturesList.map(feature => (
+                  {features.map(feature => (
                     <WebsiteFeatureCheckbox key={feature.value} feature={feature} />
                   ))}
                 </Stack>

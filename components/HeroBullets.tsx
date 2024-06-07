@@ -60,7 +60,7 @@ export function HeroBullets() {
                     </List>
 
                     <Group mt={30}>
-                        <Link href="/contact">
+                        <Link href="/quote-request">
                             <Button radius="xl" size="md" className={classes.control}>
                                 Kérj ajánlatot még ma!
                             </Button>

@@ -9,6 +9,8 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { useState } from 'react';
 import { Footer } from '@/components/Footer';
+import { Notifications } from '@mantine/notifications';
+import '@mantine/notifications/styles.css';
 
 const titleFont = Righteous({
     weight: "400",
@@ -72,6 +74,7 @@ export default function App({ Component, pageProps }: AppProps) {
             <meta name="viewport" content="width=device-width, initial-scale=1" />
         </Head>
         <MantineProvider withCssVariables defaultColorScheme="dark" theme={theme}>
+            <Notifications />
             <DoubleHeader />
             <AnimatePresence>
                 {loadAnimationEnded && (<motion.div key={router.route} initial="pageInitial" animate="pageAnimate" exit="pageExit" style={{
