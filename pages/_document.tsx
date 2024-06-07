@@ -3,7 +3,7 @@ import { ColorSchemeScript } from '@mantine/core';
 
 export default function Document() {
     return (
-        <Html lang="hu">
+        <Html lang="hu" data-color-scheme="dark">
             <Head>
                 <ColorSchemeScript defaultColorScheme="light" />
                 <link rel="icon" href="/icon.png" />

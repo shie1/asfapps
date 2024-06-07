@@ -10,7 +10,20 @@ export default async function handler(
         message: string;
     }>,
 ) {
-    const qr = req.body as QuoteRequest;
+    // verify hCaptcha token
+    const token = req.body["hCaptcha"];
+    const secret = process.env.HCAPTCHA_SECRET as string;
+    const response = await fetch(`https://hcaptcha.com/siteverify?secret=${secret}&response=${token}`, {
+        method: "POST",
+    }).then(res => res.json());
+    if (!response.success) {
+        res.status(400).json({ title: "Hibás hCaptcha token", message: "Kérjük próbálja újra!" });
+        return;
+    }
+
+    const qr = req.body as any;
+    delete qr["hCaptcha"];
+
     const client = new MongoClient(process.env.MONGODB_URI as string);
     try {
         await client.connect();

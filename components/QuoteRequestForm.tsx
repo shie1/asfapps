@@ -6,6 +6,9 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 import { PriceRender } from "./PriceRender";
 import { FeatureReference, WebsiteFeature } from "./types";
 import { notifications } from "@mantine/notifications";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
+import { useRef } from "react";
+import { useMediaQuery } from "@mantine/hooks";
 
 const Item = ({ name, price, quantity }: {
   name: string;
@@ -29,6 +32,7 @@ const QuoteFormContext = createContext<UseFormReturnType<{
     description: string;
     features: FeatureReference[];
   };
+  hCaptcha: string;
 }> | null>(null);
 
 const notNumberRegex = /[^0-9]*/g
@@ -123,6 +127,7 @@ export function QuoteRequestForm({
       description: string;
       features: FeatureReference[]
     };
+    hCaptcha: string;
   }>({
     initialValues: {
       client: {
@@ -134,7 +139,8 @@ export function QuoteRequestForm({
         name: "",
         description: "",
         features: [],
-      }
+      },
+      hCaptcha: "",
     },
     validateInputOnBlur: true,
     validate: {
@@ -145,9 +151,22 @@ export function QuoteRequestForm({
     },
   });
 
+  const captchaRef = useRef<any>(null);
   const [features, setFeatures] = useState<WebsiteFeature[]>([]);
+  const [sitekey, setSitekey] = useState<string>("" as any);
+
+  const compactCaptcha = useMediaQuery("(max-width: 430px)");
 
   const send = (values: typeof form.values = form.values) => {
+    console.log(values);
+    if (!values.hCaptcha) {
+      notifications.show({
+        title: "Hibás Captcha",
+        message: "Kérlek erősítsd meg, hogy nem vagy robot!",
+        color: "red",
+      });
+      return;
+    }
     fetch("/api/quote-request/send", {
       method: "POST",
       headers: {
@@ -169,6 +188,15 @@ export function QuoteRequestForm({
     fetch("/api/features", { signal: ac.signal })
       .then(res => res.json())
       .then(setFeatures)
+      .catch(() => { });
+    return () => ac.abort();
+  }, []);
+
+  useEffect(() => {
+    const ac = new AbortController();
+    fetch("/api/hcaptcha/sitekey", { signal: ac.signal })
+      .then(res => res.json())
+      .then(setSitekey)
       .catch(() => { });
     return () => ac.abort();
   }, []);
@@ -208,7 +236,7 @@ export function QuoteRequestForm({
         }
       })
     ]
-  }, [form.values.project.features]);
+  }, [features, form.values.project.features]);
 
   const estimatedPrice = useMemo(() => {
     return summary.reduce((prev, curr) => prev + curr.price * (curr.quantity || 1), 0);
@@ -284,6 +312,24 @@ export function QuoteRequestForm({
                     ))}
                   </Stack>
                 </motion.div>
+                <motion.div key="captcha" className={classes.section}
+                  transition={{
+                    duration: 0.4,
+                    type: "just",
+                    ease: "easeInOut"
+                  }}
+                  initial={{ transform: "translateY(100%)" }}
+                  animate={{ transform: "translateX(0)" }}
+                  exit={{ transform: "translateY(100%)" }}>
+                  <div className={classes.captcha}>{sitekey ? <HCaptcha
+                    languageOverride="hu"
+                    theme="light"
+                    size={compactCaptcha ? "compact" : "normal"}
+                    ref={captchaRef}
+                    sitekey={sitekey}
+                    onVerify={(token) => form.setFieldValue("hCaptcha", token)}
+                  /> : <></>}</div>
+                </motion.div>
                 <motion.div key="summaryBottom" className={classes.endSection}
                   transition={{
                     duration: 0.4,
@@ -294,7 +340,7 @@ export function QuoteRequestForm({
                   animate={{ transform: "translateX(0)" }}
                   exit={{ transform: "translateY(100%)" }}>
                   <Text>Becsült ár: {estimatedPrice ? <span className={classes.price}><PriceRender value={estimatedPrice} /></span> : "ismeretlen"}</Text>
-                  <Button className={classes.submitButton} type="submit">Küldés</Button>
+                  <Button disabled={!form.values.hCaptcha} className={classes.submitButton} type="submit">{form.values.hCaptcha ? "Küldés" : "Kérlek erősítsd meg, hogy nem vagy robot!"}</Button>
                 </motion.div>
               </>)}
             </AnimatePresence>

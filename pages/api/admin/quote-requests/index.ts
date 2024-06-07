@@ -24,7 +24,7 @@ export default async function handler(
         await client.connect();
         const database = client.db("asfapps");
         const collection = database.collection('quote-requests');
-        const quoteRequests = await collection.find({}, { projection: { "_id": 0 } }).toArray() as any;
+        const quoteRequests = await collection.find({}).toArray() as any;
         res.status(200).json(quoteRequests);
     } catch (error) {
         console.error(error);

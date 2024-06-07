@@ -2,6 +2,22 @@
   font-family: var(--font-body);
 }
 
+.captcha {
+  overflow: hidden;
+  background: #fafafa;
+  border-radius: 1rem;
+  margin: auto;
+
+  &:hover {
+    background-color: rgb(245, 245, 245);
+  }
+
+  iframe {
+    border: none;
+    transform: translateY(4px);
+  }
+}
+
 .input {
   flex: 1;
   min-width: 230px;
@@ -210,12 +226,11 @@
   flex-direction: row;
   justify-content: right;
   align-items: center;
-  gap: 2rem;
+  gap: 1rem;
   position: sticky;
   bottom: 1rem;
 
   & > * {
-    margin: auto 0;
     line-height: 1;
   }
 

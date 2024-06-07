@@ -1,17 +1,54 @@
 .main {
-    * {
-        font-family: var(--font-body);
-    }
+  * {
+    font-family: var(--font-body);
+  }
 }
 
 .quoteRequest {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  margin: 0 auto;
+  padding: 1rem 4rem;
+  background-color: var(--mantine-color-dark-8);
+  width: 100%;
+  border-radius: 4rem;
+  gap: 1rem;
+}
+
+.features {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  margin: 0 auto;
+  background-color: var(--mantine-color-dark-8);
+  width: 100%;
+  border-radius: 4rem;
+  gap: .5rem;
+
+  & .feature {
     display: flex;
-    flex-direction: column;
     align-items: flex-start;
+    flex-direction: column;
+    gap: .5rem;
     justify-content: center;
-    margin: 0 auto;
-    padding: 1rem 2rem;
-    box-shadow: 0 0 5px var(--mantine-color-paleRed-filled);
+    background-color: var(--mantine-color-dark-7);
     width: 100%;
-    border-radius: 4rem;
+    padding: 1rem 1.5rem;
+    border-radius: 3rem;
+
+    & .price {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--mantine-color-paleRed-7);
+    }
+  }
+}
+
+.price {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--mantine-color-paleRed-7);
 }

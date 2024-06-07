@@ -2,8 +2,11 @@ import classes from "@/styles/Footer.module.css";
 import { Container, Divider, Text } from "@mantine/core";
 import { CurrentYearRender } from "./CurrentYearRender";
 import { ProtectedEmailRender } from "./ProtectedEmailRender";
+import { useRouter } from "next/router";
 
 export const Footer = () => {
+    const router = useRouter();
+
     return (
         <footer className={classes.footer}>
             <Container size="md" px="xl" className={classes.inner}>
@@ -55,7 +58,9 @@ export const Footer = () => {
                     }}>
                         Cégadatok
                     </Text>
-                    <Text className={classes.normalText}>
+                    <Text onClick={() => {
+                        router.push("/admin");
+                    }} className={classes.normalText}>
                         Skoda Dávid EV.
                     </Text>
                     <Text className={classes.normalText}>

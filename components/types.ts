@@ -18,6 +18,7 @@ export type FeatureReference = {
 }
 
 export type QuoteRequest = {
+    _id?: string;
     client: {
         name: string;
         email: string;
@@ -27,5 +28,19 @@ export type QuoteRequest = {
         name: string;
         description: string;
         features: FeatureReference[];
+    };
+}
+
+export type QuoteRequestWithFeatures = {
+    _id?: string;
+    client: {
+        name: string;
+        email: string;
+        phone: string;
+    };
+    project: {
+        name: string;
+        description: string;
+        features: WebsiteFeature[];
     };
 }
